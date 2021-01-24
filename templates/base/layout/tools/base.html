@@ -1,0 +1,64 @@
+{% load i18n %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="Bootstrap News Template - Free HTML Templates" name="keywords">
+        <meta content="Bootstrap News Template - Free HTML Templates" name="description">
+
+        <!-- Favicon -->
+        <link href="{% static 'img/favicon.ico' %}" rel="icon">
+
+        <!-- Google Fonts -->
+        <link href="{% static 'vendor/fonts/css/font.css' %}" rel="stylesheet"> 
+
+        <!-- CSS Libraries -->
+        <link href="{%static 'vendor/bootstrap/bootstrap.min.css' %}" rel="stylesheet">
+        <link href="{% static 'vendor/fontawesome/css/all.min.css' %}" rel="stylesheet">
+        <link href="{% static 'lib/slick/slick.css' %}" rel="stylesheet">
+        <link href="{% static 'lib/slick/slick-theme.css' %}" rel="stylesheet">
+
+        <!-- Template Stylesheet -->
+        <link href="{% static 'css/style.css'%}" rel="stylesheet">
+    </head>
+
+        <title>
+            {% block site_title %}
+        
+            {% endblock %}
+        </title>
+        
+        {% block base_css %}
+        {% endblock %}
+    
+    </head>
+    
+    <body>
+
+        {% block base_content %}
+        {% endblock %}
+    
+      
+    
+    
+        <script src="{% static 'vendor/jQuery/jquery-3.4.1.min.js' %}"></script>
+        <script src="{%static 'vendor/bootstrap/bootstrap.bundle.min.js' %}"></script> <!-- i have it in vendor/bootstrap/dist/js/bootstrap.bundle.min.js -->
+        <script src=" {% static 'lib/easing/easing.min.js' %}"></script> 
+        <script src="{% static 'lib/slick/slick.min.js' %}"></script>
+
+        <!-- Template Javascript -->
+        <script src="{% static 'js/main.js' %}"></script>
+
+    
+        {% block base_js %}
+        {% endblock %}
+  
+     </body>
+  
+  </html>
+
+
+    
