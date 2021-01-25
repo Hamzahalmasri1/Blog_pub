@@ -61,7 +61,9 @@ Home
                     {%for cate ,articles in all_articles.items%}
                     {% if cate.title == category.title %}
                     <div class="col-md-6">
-                        <h2>{{category.title}}</h2>
+                        <a href="{% url 'articles:category_results' title=cate.title  %}">
+                        <h2 >{{category.title}}</h2>
+                    </a>
                         <div class="row cn-slider">
                         {% for article in articles|slice:'2:' %}
                       
