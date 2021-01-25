@@ -15,58 +15,37 @@ Home
                 <div class="row">
                     <div class="col-md-6 tn-left">
                         <div class="row tn-slider">
+                            {%for category,articles in all_articles.items%}
+                            {% for article in articles|slice:':1' %}
                             <div class="col-md-6">
                                 <div class="tn-img">
-                                    <img src="{% static 'img/news-450x350-1.jpg' %}" />
+                                    <img style="height: 343.625px; width: 540px;" src="/media/{{ article.image }}" /> 
+
                                     <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
+                                        <a href="">{{article.title}}</a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="tn-img">
-                                    <img src="{% static 'img/news-450x350-2.jpg' %}" />
-                                    <div class="tn-title">
-                                        <a  href="">Integer hendrerit elit eget purus sodales maximus</a>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
+                            {% endfor %}
+                            
                         </div>
                     </div>
                     <div class="col-md-6 tn-right">
                         <div class="row">
+                            {%for category,articles in all_articles.items%}
+                            {% for article in articles|slice:':1' %}  
                             <div class="col-md-6">
                                 <div class="tn-img">
-                                    <img src="{% static 'img/news-350x223-1.jpg' %}" />
+                                    <img style="height: 172.025px ; width: 270px;" src="/media/{{ article.image }}" />
                                     <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
+                                        <a href="">{{article.title}}</a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="tn-img">
-                                    <img src="{% static 'img/news-350x223-2.jpg' %}" />
-                                    <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="tn-img">
-                                    <img src="{% static 'img/news-350x223-3.jpg' %}" />
-                                    <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="tn-img">
-                                    <img src="{% static 'img/news-350x223-4.jpg' %}" />
-                                    <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
+                            {% endfor %}
+                           
                         </div>
                     </div>
                 </div>
@@ -78,136 +57,61 @@ Home
         <div class="cat-news">
             <div class="container">
                 <div class="row">
+                    {% for category in all_category%}
+                    {%for cate ,articles in all_articles.items%}
+                    {% if cate.title == category.title %}
                     <div class="col-md-6">
-                        <h2>Sports</h2>
+                        <h2>{{category.title}}</h2>
                         <div class="row cn-slider">
+                        {% for article in articles|slice:'2:' %}
+                      
                             <div class="col-md-6">
                                 <div class="cn-img">
-                                    <img src="{% static 'img/news-350x223-1.jpg' %}" />
+                                    <img style="height: 162.462px; width: 255px;" src="/media/{{ article.image }}" />
                                     <div class="cn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
+                                        <a href="">{{article.title}}</a>
                                     </div>
                                 </div>
                             </div>
+                           
+
+                            {%endfor%}
+                            {%endif%}
+                            {%endfor%}
+
+                            {%for cate ,articles in all_articles.items%}
+                            {% if cate.title == category.title %}
+                            {% for article in articles|slice:':2' %}
+                      
                             <div class="col-md-6">
                                 <div class="cn-img">
-                                    <img src="{% static 'img/news-350x223-2.jpg' %}" />
+                                    <img style="height: 162.462px; width: 255px;" src="/media/{{ article.image }}" />
                                     <div class="cn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
+                                        <a href="">{{article.title}}</a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="cn-img">
-                                    <img src="{% static 'img/news-350x223-3.jpg' %}" />
-                                    <div class="cn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
+                           
+
+                            {%endfor%}
+                            {%endif%}
+                            {%endfor%}
+
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <h2>Technology</h2>
-                        <div class="row cn-slider">
-                            <div class="col-md-6">
-                                <div class="cn-img">
-                                    <img src="{% static 'img/news-350x223-4.jpg' %}" />
-                                    <div class="cn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="cn-img">
-                                    <img src="{% static 'img/news-350x223-5.jpg' %}" />
-                                    <div class="cn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="cn-img">
-                                    <img src="{% static 'img/news-350x223-1.jpg' %}" />
-                                    <div class="cn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {%endfor%} 
                 </div>
             </div>
         </div>
+
+
+
         <!-- Category News End-->
 
-        <!-- Category News Start-->
-        <div class="cat-news">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h2>Business</h2>
-                        <div class="row cn-slider">
-                            <div class="col-md-6">
-                                <div class="cn-img">
-                                    <img src="{% static 'img/news-350x223-5.jpg' %}" />
-                                    <div class="cn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="cn-img">
-                                    <img src="{% static 'img/news-350x223-4.jpg' %}" />
-                                    <div class="cn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="cn-img">
-                                    <img src="{% static 'img/news-350x223-3.jpg' %}" />
-                                    <div class="cn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <h2>Entertainment</h2>
-                        <div class="row cn-slider">
-                            <div class="col-md-6">
-                                <div class="cn-img">
-                                    <img src="{% static 'img/news-350x223-2.jpg' %}" />
-                                    <div class="cn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="cn-img">
-                                    <img src="{% static 'img/news-350x223-1.jpg' %}" />
-                                    <div class="cn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="cn-img">
-                                    <img src="{% static 'img/news-350x223-3.jpg' %}" />
-                                    <div class="cn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Category News End-->
+              
         
+ 
+      
         <!-- Tab News Start-->
         <div class="tab-news">
             <div class="container">
@@ -412,81 +316,26 @@ Home
                 <div class="row">
                     <div class="col-lg-9">
                         <div class="row">
+
+                            {%for category,articles in all_articles.items%}
+                            {% for article in articles|slice:':3' %}  
                             <div class="col-md-4">
                                 <div class="mn-img">
-                                    <img src="img/news-350x223-1.jpg" />
+                                    <img style="height: 162.462px; width: 255px;" src="/media/{{ article.image }}" />
                                     <div class="mn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
+                                        <a href="">{{article.title}}</a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="mn-img">
-                                    <img src="img/news-350x223-2.jpg" />
-                                    <div class="mn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mn-img">
-                                    <img src="img/news-350x223-3.jpg" />
-                                    <div class="mn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mn-img">
-                                    <img src="img/news-350x223-4.jpg" />
-                                    <div class="mn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mn-img">
-                                    <img src="img/news-350x223-5.jpg" />
-                                    <div class="mn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mn-img">
-                                    <img src="img/news-350x223-1.jpg" />
-                                    <div class="mn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mn-img">
-                                    <img src="img/news-350x223-2.jpg" />
-                                    <div class="mn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mn-img">
-                                    <img src="img/news-350x223-3.jpg" />
-                                    <div class="mn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mn-img">
-                                    <img src="img/news-350x223-4.jpg" />
-                                    <div class="mn-title">
-                                        <a href="">Lorem ipsum dolor sit</a>
-                                    </div>
-                                </div>
-                            </div>
+                            
+                            {% endfor %}
+                            {% endfor %}
                         </div>
                     </div>
 
+
+
+                
                     <div class="col-lg-3">
                         <div class="mn-list">
                             <h2>Read More</h2>
