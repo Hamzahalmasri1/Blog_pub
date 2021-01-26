@@ -42,7 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'multiselectfield',
     'articles.apps.ArticlesConfig',
+    'account.apps.AccountConfig',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +59,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'blogs.urls'
+
+AUTH_USER_MODEL = 'account.UserRegistration'
 
 TEMPLATES = [
     {
@@ -86,7 +91,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -129,3 +133,9 @@ STATICFILES_DIRS = [
    STATIC_DIR,
     
 ]
+
+
+LOGIN_REDIRECT_URL = 'articles:index'
+
+# This will print email in Console.
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 

@@ -7,7 +7,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_filter = ('title',)
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description','author','image','likes','views','publish_date',)
+    list_display = ('title', 'description','author','image','views','publish_date',)
     list_filter = ('title','create_at','update_at')
 
 admin.site.register(articles_models.Category,CategoryAdmin)

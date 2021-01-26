@@ -52,12 +52,110 @@
           </div>
         </form>
         </div>
-  
+        
+        
+        <!-- Split dropright button -->
+        <div class="btn-group dropright">
+          <button type="button" class="btn btn-secondary">
+            <i class="far fa-user"></i>
+          </button>
+          <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Toggle Dropright</span>
+          </button>
+          {% if user.is_authenticated %}
+          <div class="navbar-tool-text ml-n3">
+            {% if user.is_authenticated %}
+            <small>Hello, {{ user.username }}</small>My Account
+            {% else %}
+            <small>Hello, Sign in</small>My Account
+            {% endif %}
+            </div>
+          <div class="dropdown-menu">
+          
+      
+           
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="dropdown-item" href="">
+                        <div class="d-flex">
+                            <div class="lead text-muted pt-1">
+                                <i class="far fa-user"></i>
+                            </div>
+                            <div class="ml-2 align-self-center">
+                                <span class="d-block text-heading">Profile</span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                <li class="dropdown-divider"></li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'account:change_password' %}">
+                        <div class="d-flex">
+                            <div class="lead text-muted pt-1">
+                                <i class="-fas fa-user"></i>
+                            </div>
+                            <div class="ml-2 align-self-center">
+                                <span class="d-block text-heading">
+                                    Change password
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                <li class="dropdown-divider"></li>
+                <li>
+                    <a class="dropdown-item" href="{% url 'account:logout' %}">
+                        <div class="d-flex">
+                            <div class="lead text-muted pt-1">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="ml-2 align-self-center">
+                                <span class="d-block text-heading">Logout</span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+        
+        {% else %}
+        <a class="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2" href="#signin-modal" data-toggle="modal">
+            <div class="navbar-tool-icon-box">
+                <i class="navbar-tool-icon fas fa-user"></i>
+            </div>
+            <div class="navbar-tool-text ml-n3">
+                <small>Hello, Sign in</small>My Account
+            </div>
+        </a>
+        {% endif %}
+
+            <!-- Dropdown menu links -->
+
+
+          </div>
+        </div>
+        
       </div>
+      
     </div>
   </div>
   <!-- Brand End -->
 
+
+
+
+
+
+
+
+
+
+
+  
+                 
+                  
   <!-- Nav Bar Start -->
   <div class="nav-bar">
     <div class="container">
@@ -93,17 +191,21 @@
             <a href="single-page.html" class="nav-item nav-link">Single Page</a>
             <a href="contact.html" class="nav-item nav-link">Contact Us</a>
           </div>
+          
           <div class="social ml-auto">
             <a href=""><i class="fab fa-twitter"></i></a>
             <a href=""><i class="fab fa-facebook-f"></i></a>
             <a href=""><i class="fab fa-linkedin-in"></i></a>
             <a href=""><i class="fab fa-instagram"></i></a>
             <a href=""><i class="fab fa-youtube"></i></a>
+      
           </div>
         </div>
       </nav>
     </div>
   </div>
-</header>
 
+</div>
+</header>
+{% include "components/login-register.html" %}
 <!-- Nav Bar End -->

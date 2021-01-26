@@ -1,0 +1,328 @@
+{% extends "base/main/layout/layout.html" %}
+{% load i18n %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block site_title %}
+
+{% if profile_exist %}
+{% trans "Cartzilla | My Profile" %}
+{% elif wishlist_exist %}
+{% trans "Cartzilla | My Wishlist" %}
+{% elif orders_exist or order_details_exist %}
+{% trans "Cartzilla | My Orders" %}
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+{% include "components/breadcrumb.html" %}
+
+<!-- Page Content-->
+<div class="container pb-5 mb-2 mb-md-3">
+    <div class="row">
+        <!-- Sidebar-->
+        <aside class="col-lg-4 pt-4 pt-lg-0">
+            <div class="cz-sidebar-static rounded-lg box-shadow-lg px-0 pb-0 mb-5 mb-lg-0">
+                <div class="px-4 mb-4">
+                    <div class="media align-items-center">
+                        <div class="img-thumbnail rounded-circle position-relative" style="width: 6.375rem;">
+                            <img class="rounded-circle" src="/media/{{ profile.image }}" alt="{{ profile.username }}">
+                        </div>
+                        <div class="media-body pl-3">
+                            <h3 class="font-size-base mb-0">{{ profile.username }}</h3>
+                            <span class="text-accent font-size-sm">{{ profile.email }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-secondary px-4 py-3">
+                    <h3 class="font-size-sm mb-0 text-muted">Dashboard</h3>
+                </div>
+                <ul class="list-unstyled mb-0">
+                    <li class="border-bottom mb-0"><a class="nav-link-style d-flex align-items-center px-4 py-3 
+                        {% if profile_exist %}
+                        active
+                        {% endif %}" href="{% url 'account:profile' %}"><i class="czi-user opacity-60 mr-2"></i>Profile
+                            info</a>
+                    </li>
+                    <li class="border-bottom mb-0">
+                        <a class="nav-link-style d-flex align-items-center px-4 py-3 {% if orders_exist or order_details_exist %}active{% endif %}"
+                            href="{% url 'account:orders_list' %}">
+                            <i class="czi-bag opacity-60 mr-2"></i>Orders
+                            <span class="font-size-sm text-muted ml-auto">{{ orders_count }}</span>
+                        </a>
+                    </li>
+                    <li class="border-bottom mb-0">
+                        <a class="nav-link-style d-flex align-items-center px-4 py-3 
+                        {% if wishlist_exist %}
+                            active
+                        {% endif %}
+                            " href="{% url 'account:wishlist' %}">
+                            <i class="czi-heart opacity-60 mr-2"></i>Wishlist
+                            <span class="font-size-sm text-muted ml-auto">{{ wishlist_count }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        {% if wishlist_exist %}
+        <section class="col-lg-8">
+            <!-- Toolbar-->
+            <div class="d-none d-lg-flex justify-content-between align-items-center pt-lg-3 pb-4 pb-lg-5 mb-lg-3">
+                <h6 class="font-size-base text-light mb-0">List of items you added to wishlist:</h6>
+                <a class="btn btn-primary btn-sm" href="{% url 'account:logout' %}">
+                    <i class="czi-sign-out mr-2"></i>Sign out
+                </a>
+            </div>
+
+
+            {% if wishlist_list %}
+            {% for product in wishlist_list %}
+            <!-- Item-->
+            <div class="d-sm-flex justify-content-between mt-lg-4 mb-4 pb-3 pb-sm-2 border-bottom">
+                <div class="media media-ie-fix d-block d-sm-flex text-center text-sm-left">
+                    <a class="d-inline-block mx-auto mr-sm-4" style="width: 10rem; text-align: center;"
+                        href="{% url 'core:product_detail' p_store_type=product.category.store.storetype.slug store_slug=product.category.store.slug category_slug=product.category.slug slug=product.slug %}">
+                        <img src="/media/{{ product.image }}" alt="{{ product.image }}" style="height: 160px;">
+                    </a>
+                    <div class="media-body pt-2">
+                        <h3 class="product-title font-size-base mb-2">
+                            <a
+                                href="{% url 'core:product_detail' p_store_type=product.category.store.storetype.slug store_slug=product.category.store.slug category_slug=product.category.slug slug=product.slug %}">
+                                {{ product.name }}
+                            </a>
+                        </h3>
+                        <div class="font-size-sm">
+                            <span class="text-muted mr-2">Store:</span>
+                            {{ product.category.store.name }}
+                        </div>
+                        <div class="font-size-sm">
+                            <span class="text-muted mr-2">Category:</span>
+                            {{ product.category.name}}
+                        </div>
+                        {% if product.discount_price %}
+                        <div class="h5 font-weight-normal text-accent mb-3 mr-1 pt-3">
+                            <small>JOD</small> {{ product.discount_price }}
+                            <del class="font-size-lg text-muted">
+                                <small>JOD</small> {{ product.price }}</del>
+                        </div>
+                        {% else %}
+                        <div class="h5 font-weight-normal text-accent mb-3 mr-1 pt-3">
+                            <small>JOD</small> {{ product.price }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="pt-2 pl-sm-3 mx-auto mx-sm-0 text-center">
+                    <a class="btn btn-outline-danger btn-sm" href="{% url 'core:favourite_product' product.slug %}">
+                        <i class="czi-trash mr-2"></i>Remove</a>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            No Products Yet.
+            {% endif %}
+
+        </section>
+        {% elif orders_exist %}
+        <section class="col-lg-8">
+            <!-- Toolbar-->
+            <div class="d-none d-lg-flex justify-content-between align-items-center pt-lg-3 pb-4 pb-lg-5 mb-lg-3">
+                <h6 class="font-size-base text-light mb-0">List of your Orders:</h6>
+                <a class="btn btn-primary btn-sm" href="{% url 'account:logout' %}">
+                    <i class="czi-sign-out mr-2"></i>Sign out
+                </a>
+            </div>
+            <!-- Orders -->
+            <div class="table-responsive font-size-md">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Date Purchased</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% if orders_list %}
+                        {% for order in orders_list %}
+                        <tr>
+                            <td class="py-3"><a class="nav-link-style font-weight-medium font-size-sm"
+                                    href="{% url 'account:order_details' order.id %}">{{ order.id }}</a></td>
+                            <td class="py-3">{{ order.create_at }}</td>
+                            <td class="py-3">
+                                <span class="badge badge-{% if order.status == 'In Progress' %}info{% elif order.status == 'Delayed' %}warning{% elif order.status == 'Canceled' %}danger{% else %}success{% endif %}
+                                    m-0">
+                                    {{ order.status }}
+                                </span>
+                            </td>
+                            <td class="py-3">{{ order.total }} JOD</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td>No Orders Yet.</td>
+                        </tr>
+                        {% endif %}
+
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        {% elif order_details_exist %}
+        <section class="col-lg-8">
+            <!-- Toolbar-->
+            <div class="d-none d-lg-flex justify-content-between align-items-center pt-lg-3 pb-4 pb-lg-5 mb-lg-3">
+                <h6 class="font-size-base text-light mb-0">List of your Orders:</h6>
+                <h6 class="font-size-base text-light mb-0">Total: {{ order_details.0.order.total }} <small>JOD</small>
+                </h6>
+                <a class="btn btn-primary btn-sm" href="{% url 'account:logout' %}">
+                    <i class="czi-sign-out mr-2"></i>Sign out
+                </a>
+            </div>
+
+            <!-- Orders -->
+            <div class="table-responsive font-size-md">
+                {% for order in order_details %}
+                <!-- Product-->
+                <div class="media d-block d-sm-flex align-items-center py-4 border-bottom">
+                    <a class="d-block mb-3 mb-sm-0 mr-sm-4 mx-auto"
+                        href="{% url 'core:product_detail' p_store_type=order.product.category.store.storetype.slug store_slug=order.product.category.store.slug category_slug=order.product.category.slug slug=order.product.slug %}"
+                        style="width: 12.5rem;"><img class="rounded-lg" src="/media/{{ order.product.image }}"
+                            alt="Product"></a>
+                    <div class="media-body text-center text-sm-left">
+                        <h3 class="h6 product-title mb-2">
+                            <a
+                                href="{% url 'core:product_detail' p_store_type=order.product.category.store.storetype.slug store_slug=order.product.category.store.slug category_slug=order.product.category.slug slug=order.product.slug %}">
+                                {{ order.product.name }}</a>
+                        </h3>
+                        <h6>
+                            Quantity: {{ order.quantity }}
+                        </h6>
+                        {% if order.size_Choiced %}
+                        <h6>
+                            Size: {{ order.size_Choiced }}
+                        </h6>
+                        {% endif %}
+                        {% if order.color_Choiced %}
+                        <h6>
+                            <div class="pb-2">Color:</div>
+                            <label class="custom-option-label rounded-circle">
+                                <span class="custom-option-color rounded-circle"
+                                    style="background-color: {{ order.color_Choiced }};"></span>
+                            </label>
+                        </h6>
+                        {% endif %}
+                        <div class="d-inline-block text-accent">
+                            {% if order.product.discount_price %}
+                            <span class="text-accent"><small>JOD</small>
+                                {{ order.product.discount_price}}
+                            </span>
+                            <del class="font-size-sm text-muted">{{ order.product.price }}</del>
+                            {% else %}
+                            <span class="text-accent"><small>JOD</small>
+                                {{ order.product.price }}</span>
+                            {% endif %}
+                        </div>
+                        <h6 class="pt-5">
+                            Subtotal:
+                            {% if order.product.discount_price %}
+                            <span class="text-dark">
+                                <small>{{ order.product.discount_price}}</small>
+                            </span>
+                            {% else %}
+                            <span class="text-dark">
+                                <small>{{ order.product.price }}</small>
+                            </span>
+                            {% endif %} * <small>{{ order.quantity }}</small> =
+                            <span class="text-accent">{{ order.total }} <small>JOD</small></span>
+
+                        </h6>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% else %}
+        <!-- Content  -->
+        <section class="col-lg-8">
+            <!-- Toolbar-->
+            <div class="d-none d-lg-flex justify-content-between align-items-center pt-lg-3 pb-4 pb-lg-5 mb-lg-3">
+                <h6 class="font-size-base text-light mb-0">Update you profile details below:</h6>
+                <a class="btn btn-primary btn-sm" href="{% url 'account:logout' %}">
+                    <i class="czi-sign-out mr-2"></i>Sign out
+                </a>
+            </div>
+            <!-- Profile form-->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form.username|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form.email|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form.first_name|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form.last_name|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form.phone_number|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form.address|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form.city|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            {{ form.zip_code|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            {{ form.image|as_crispy_field }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <hr class="mt-2 mb-3">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <div class="custom-control custom-checkbox d-block">
+                        </div>
+                        <button class="btn btn-primary mt-3 mt-sm-0" type="submit">Update profile</button>
+                    </div>
+                </div>
+
+
+            </form>
+        </section>
+        {% endif %}
+
+    </div>
+</div>
+
+
+{% endblock %}
