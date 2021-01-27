@@ -73,7 +73,7 @@ Home
                                 <div class="cn-img">
                                     <img style="height: 162.462px; width: 255px;" src="/media/{{ article.image }}" />
                                     <div class="cn-title">
-                                        <a href="">{{article.title}}</a>
+                                        <a href="{% url 'articles:details' cate_title=cate.title  title=article.title  %}">{{article.title}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@ Home
                                 <div class="cn-img">
                                     <img style="height: 162.462px; width: 255px;" src="/media/{{ article.image }}" />
                                     <div class="cn-title">
-                                        <a href="">{{article.title}}</a>
+                                        <a href="{% url 'articles:details' cate_title=cate.title  title=article.title  %}">{{article.title}}</a>
                                     </div>
                                 </div>
                             </div>
