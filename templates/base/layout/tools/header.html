@@ -6,6 +6,27 @@
 {% endfor %} 
 {% endif %}
 
+
+<style type="text/css">
+  #card1{
+  position: relative;
+  top:0px;
+  left:500px;
+
+
+   }
+ </style>
+
+<style type="text/css">
+  #card2{
+  position: relative;
+  top:0px;
+  left:200px;
+
+
+   }
+ </style>
+
 <header class="box-shadow-sm">
   <!-- Top Bar Start -->
   <div class="top-bar">
@@ -36,7 +57,7 @@
       <div class="row align-items-center">
         <div class="col-lg-3 col-md-4">
           <div class="b-logo">
-            <a href="index.html">
+            <a href="{% url 'articles:index' %}">
               <img src="{%static 'img/logo.png' %}" alt="Logo" />
             </a>
           </div>
@@ -53,90 +74,62 @@
         </form>
         </div>
         
+    <div id ='card1' class="card" style="width: 10rem;">
+          <div class="card-body">
         
-        <!-- Split dropright button -->
-        <div class="btn-group dropright">
-          <button type="button" class="btn btn-secondary">
-            <i class="far fa-user"></i>
-          </button>
-          <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="sr-only">Toggle Dropright</span>
-          </button>
-          {% if user.is_authenticated %}
-          <div class="navbar-tool-text ml-n3">
-            {% if user.is_authenticated %}
-            <small>Hello, {{ user.username }}</small>My Account
-            {% else %}
-            <small>Hello, Sign in</small>My Account
-            {% endif %}
-            </div>
+
+        {% if user.is_authenticated %}
+
+
+        <div class="nav-item dropdown">
+          <a
+            href="#"
+            class="nav-link dropdown-toggle"
+            data-toggle="dropdown"
+            ><small>Hello, {{ user.username }}</small></a
+          >
           <div class="dropdown-menu">
-          
-      
-           
-            <ul class="dropdown-menu">
-                <li>
-                    <a class="dropdown-item" href="">
-                        <div class="d-flex">
-                            <div class="lead text-muted pt-1">
-                                <i class="far fa-user"></i>
-                            </div>
-                            <div class="ml-2 align-self-center">
-                                <span class="d-block text-heading">Profile</span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="dropdown-divider"></li>
-                <li>
-                    <a class="dropdown-item" href="{% url 'account:change_password' %}">
-                        <div class="d-flex">
-                            <div class="lead text-muted pt-1">
-                                <i class="-fas fa-user"></i>
-                            </div>
-                            <div class="ml-2 align-self-center">
-                                <span class="d-block text-heading">
-                                    Change password
-                                </span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-                <li class="dropdown-divider"></li>
-                <li>
-                    <a class="dropdown-item" href="{% url 'account:logout' %}">
-                        <div class="d-flex">
-                            <div class="lead text-muted pt-1">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="ml-2 align-self-center">
-                                <span class="d-block text-heading">Logout</span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-            </ul>
+            <a href="{% url 'account:profile' %}" class="dropdown-item">profile</a>
+            <li class="dropdown-divider"></li>
+            <a href="{% url 'account:change_password' %}" class="dropdown-item">Change password</a>
+            <li class="dropdown-divider"></li>
+            <a href="{% url 'account:logout' %}" class="dropdown-item">Logout</a>
+          </div>
         </div>
-
-
+       
         
+         
+
         {% else %}
         <a class="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2" href="#signin-modal" data-toggle="modal">
             <div class="navbar-tool-icon-box">
                 <i class="navbar-tool-icon fas fa-user"></i>
             </div>
             <div class="navbar-tool-text ml-n3">
-                <small>Hello, Sign in</small>My Account
+                <small>Hello, Sign in</small>
             </div>
         </a>
         {% endif %}
 
             <!-- Dropdown menu links -->
 
+            
+          </div>
+        </div>
+        <div id ='card2' class="card" style="width: 8rem;">
+          <div class="card-body">
+        <a class="navbar-tool d-none d-lg-flex" href="{% url 'account:wishlist' %}"><span
+          class="navbar-tool-tooltip">Favorite</span>
+      <div class="navbar-tool-icon-box">
+          <i class="navbar-tool-icon fas fa-heart"></i>
+      </div>
+        </a>
 
           </div>
         </div>
-        
+      </div>
+    </div>
+    
       </div>
       
     </div>
@@ -175,21 +168,23 @@
           id="navbarCollapse"
         >
           <div class="navbar-nav mr-auto">
-            <a href="index.html" class="nav-item nav-link active">Home</a>
+            <a href="{% url 'articles:index' %}" class="nav-item nav-link active">Home</a>
             <div class="nav-item dropdown">
               <a
                 href="#"
                 class="nav-link dropdown-toggle"
                 data-toggle="dropdown"
-                >Dropdown</a
+                >Categories list</a
               >
               <div class="dropdown-menu">
-                <a href="#" class="dropdown-item">Sub Item 1</a>
-                <a href="#" class="dropdown-item">Sub Item 2</a>
+                {% for category in all_category%}
+                
+                <a href="{% url 'articles:category_results' title=category.title  %}" class="dropdown-item">{{category.title}}</a>
+                {%endfor%}
               </div>
             </div>
-            <a href="single-page.html" class="nav-item nav-link">Single Page</a>
-            <a href="contact.html" class="nav-item nav-link">Contact Us</a>
+         
+            <a href="" class="nav-item nav-link">Contact Us</a>
           </div>
           
           <div class="social ml-auto">

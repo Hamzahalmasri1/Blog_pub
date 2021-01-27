@@ -13,8 +13,8 @@ Category's blogs
 
 <style type="text/css">
     .topcornerright{
-    position: relative;
-    top:0px;
+    position:relative ;
+    top:-300px;
     left:1000px;
 
  
@@ -27,7 +27,7 @@ Category's blogs
     display: block;
     width: 900px;
     height: 2px;
-    background: #000;
+    background: rgb(240, 103, 103);
     left: 0;
     top: 50%;
     position: relative;
@@ -36,12 +36,22 @@ Category's blogs
 </style>
 
   
+
 <div class="col-md-6">
-    <h2 id='category_header'>{{category_title}}</h2>
+    {%if search %}
+    <h2 id='category_header'><span class="badge badge-dark">search on :...</span> {{search}}</h2>
+    
     <div class="row cn-slider slick-initialized slick-slider">
+    {%else%}
+    <h2 id='category_header'>{{category_title}}</h2>
+    
+    <div class="row cn-slider slick-initialized slick-slider">
+    {%endif%}
 <!-- end meta -->
 </div><!-- end blog-box -->
 </div>
+
+
 
 
 
@@ -63,7 +73,7 @@ Category's blogs
                 <div class="col-md-4">
                     
                     <div class="post-media">
-                        <a href="" title="">
+                        <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}" title="">
                             <img src="/media/{{ article.image }}" alt="" class="img-fluid">
                             <div class="hovereffect"></div>
                         </a>
@@ -71,18 +81,30 @@ Category's blogs
                 </div><!-- end col -->
               
                 <div class="blog-meta big-meta col-md-8">
-                    <h4><a href="" title="">{{article.title}}</a></h4>
+                    <h4><a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}" title="">{{article.title}}</a></h4>
                     <p>{{article.description|truncatewords:10 }}</p>
-                    <small class="firstsmall"><a class="bg-black" href="" title="">{{category_title}}  </a></small>
-                    <small><a href="tech-single.html" title="">  {{article.publish_date}}</a></small>
-                    <small><a href="tech-author.html" title=""> {{article.author}}</a></small>
-                    <small><a href="tech-single.html" title=""><i class="fa fa-eye"></i> {{articles.views}}</a></small>
+                    <small class="badge badge-info"><a class="bg-black" href="{% url 'articles:category_results' title=article.category.title  %}" title="">{{article.category.title}}</a></small>
+                    <small>  {{article.publish_date}}</small>
+                    <small> {{article.author}}</small>
+                    <small><i class="fa fa-eye"></i> {{article.views}}</small>
+                    {% if user in article.favorites.all %}
+                    <a class="btn-wishlist btn-sm"
+                        href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                        data-placement="left" data-original-title="Remove from favorite">
+                        <i class="fa fa-heart"></i></a>
+                    {% else %}
+                    <a class="btn-wishlist btn-sm"
+                        href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                        data-placement="left" data-original-title="Add to favorite"> 
+                        <i class="fas fa-heart-broken"></i></a>
+                    {% endif %}
                 </div><!-- end meta -->
             </div><!-- end blog-box -->
 
             <hr class="invis">
         {%endfor%}
     </div>
+    
     <hr class="invis">
     <div class="pagination">
         <span class="step-links">
@@ -115,8 +137,9 @@ Category's blogs
       
        <!-- end sidebar -->
     </div>
-    </div>
+</div> 
 
+</div>  
 
 
 {% endblock %}

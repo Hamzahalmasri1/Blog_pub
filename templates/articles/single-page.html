@@ -27,8 +27,21 @@
                     <div class="col-lg-8">
                         <div class="sn-container">
                             <div class="sn-img">
+                                
                                 <img src="/media/{{ aricle_image }}" />
                             </div>
+                            
+                            {% if user in article.favorites.all %}
+                            <a class="btn-wishlist btn-sm"
+                                href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                                data-placement="left" data-original-title="Remove from favorite">
+                                <i class="fa fa-heart fa-2x"></i>Remove to favorite</a>
+                            {% else %}
+                            <a class="btn-wishlist btn-sm"
+                                href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                                data-placement="left" data-original-title="Add to favorite"> 
+                                <i class="fas fa-heart-broken fa-2x"></i>Add to favorite</a>
+                            {% endif %}
                             <div class="sn-content">
                                 <h1 class="sn-title">{{article_title}}</h1>
                                 <p>
@@ -40,38 +53,26 @@
                         <div class="sn-related">
                             <h2>Related News</h2>
                             <div class="row sn-slider">
+                                {% for article in in_this_category|slice:'2:' %}
                                 <div class="col-md-4">
                                     <div class="sn-img">
-                                        <img src="img/news-350x223-1.jpg" />
+                                        <img src="/media/{{ article.image }}" />
                                         <div class="sn-title">
-                                            <a href="">Interdum et fames ac ante</a>
+                                            <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{ article.title }}/a>
                                         </div>
                                     </div>
                                 </div>
+                                {%endfor%}
+                                {% for article in in_this_category|slice:':2' %}
                                 <div class="col-md-4">
                                     <div class="sn-img">
-                                        <img src="img/news-350x223-2.jpg" />
+                                        <img src="/media/{{ article.image }}" />
                                         <div class="sn-title">
-                                            <a href="">Interdum et fames ac ante</a>
+                                            <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{ article.title }}/a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="sn-img">
-                                        <img src="img/news-350x223-3.jpg" />
-                                        <div class="sn-title">
-                                            <a href="">Interdum et fames ac ante</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="sn-img">
-                                        <img src="img/news-350x223-4.jpg" />
-                                        <div class="sn-title">
-                                            <a href="">Interdum et fames ac ante</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                {%endfor%}
                             </div>
                         </div>
                     </div>
@@ -87,7 +88,7 @@
                                             <img src="/media/{{ article.image }}" />
                                         </div>
                                         <div class="nl-title">
-                                            <a href="">{{ article.title }}</a>
+                                            <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{ article.title }}</a>
                                         </div>
                                     </div>
                                     {%endfor%}
@@ -117,7 +118,7 @@
                                                     <img src="/media/{{ article.image }}" />
                                                 </div>
                                                 <div class="tn-title">
-                                                    <a href="">{{ article.title }}</a>
+                                                    <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{ article.title }}</a>
                                                 </div>
                                             </div>
                                             {%endfor %}
@@ -131,7 +132,7 @@
                                                     <img src="/media/{{ article.image }}" />
                                                 </div>
                                                 <div class="tn-title">
-                                                    <a href="">{{article.title}}</a>
+                                                    <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{article.title}}</a>
                                                 </div>
                                             </div>
                                            {%endfor%}
@@ -144,7 +145,7 @@
                                                     <img src="/media/{{ article.image }}" />
                                                 </div>
                                                 <div class="tn-title">
-                                                    <a href="">{{article.title}}</a>
+                                                    <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{article.title}}</a>
                                                 </div>
                                             </div>
                                            {%endfor%}
@@ -154,31 +155,23 @@
                                 </div>
                             </div>
                             
-                            <div class="sidebar-widget">
-                                <div class="image">
-                                    <a href="https://htmlcodex.com"><img src="img/ads-2.jpg" alt="Image"></a>
-                                </div>
-                            </div>
+                           
 
                             <div class="sidebar-widget">
-                                <h2 class="sw-title">News Category </h2>
+                                <h2 class="sw-title">Category List</h2>
                                 <div class="category">
-                                    {% for category in cate_list %}
-                                    {% for title,count in category.items %}
+                                    {% for title,count in cate_list.items %}
+                                   
                                     <ul> 
-                                        <li><a href="">{{title}}</a><span>{{count}}</span></li>
+                                        <li><a href="{% url 'articles:category_results' title=title  %}">{{title}}</a><span>{{count}}</span></li>
                                        
                                     </ul>
                                     {%endfor%}
-                                    {%endfor%}
+                               
                                 </div>
                             </div>
 
-                            <div class="sidebar-widget">
-                                <div class="image">
-                                    <a href="https://htmlcodex.com"><img src="img/ads-2.jpg" alt="Image"></a>
-                                </div>
-                            </div>
+                           
                             
                             <div class="sidebar-widget">
                                 <h2 class="sw-title">Tags Cloud</h2>

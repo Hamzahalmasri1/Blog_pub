@@ -9,10 +9,9 @@ from account import forms as account_forms
 app_name = 'account'
 
 urlpatterns = [
-    # path('orders/<int:id>', account_views.order_details, name='order_details'),
-    # path('orders/', account_views.orders_view, name='orders_list'),
-    # path('profile/', account_views.profile, name='profile'),
-    # path('wishlist/', account_views.wishlist_view, name='wishlist'),
+    
+    path('profile/', account_views.profile, name='profile'),
+    path('wishlist/', account_views.wishlist_view, name='wishlist'),
 
     path('register/', account_views.register_view, name='register'),
     path('login/', account_views.login_view, name='login'),

@@ -8,6 +8,8 @@ from articles import models as article_views
 from django.urls import reverse, resolve
 from django.http import JsonResponse
 from django.db.models import Max, Min,Count
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 
@@ -19,6 +21,17 @@ class IndexPageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexPageView, self).get_context_data(**kwargs)
+        most_viewed = article_views.Article.objects.order_by('-views')[:4]
+        featured = article_views.Article.objects.order_by('-favorites')[:4]
+        recent = article_views.Article.objects.order_by('-publish_date')[:4]
+        most_recent = article_views.Article.objects.order_by('-update_at')[:4]
+        context = {
+    
+        'most_viewed' : most_viewed,
+        'featured' : featured,
+        'recent' : recent,
+        'most_recent':most_recent,
+        }
         context.update(needed_everywhere())
         return context
 
@@ -57,8 +70,14 @@ class category_results(ListView):
         context = super(category_results, self).get_context_data(**kwargs)
         category_title = self.kwargs.get('title')
         articles = article_views.Article.objects.filter(category__title=  category_title) 
-     
-        context ['category_title'] = category_title
+
+        most_viewed = article_views.Article.objects.order_by('-views')[:4]
+        featured = article_views.Article.objects.order_by('-favorites')[:4]
+        recent = article_views.Article.objects.order_by('-publish_date')[:4]
+        cate_list = article_views.Category.objects.values('title').annotate(count = Count('article'))
+        category  = {cate['title']:cate['count'] for cate in cate_list}  
+
+      
 
         paginator = Paginator(articles, self.paginate_by)
 
@@ -70,8 +89,18 @@ class category_results(ListView):
             articles_files = paginator.page(1)
         except EmptyPage:
             articles_files = paginator.page(paginator.num_pages)
-            
-        context['articles'] = articles_files
+
+      
+       
+        context = {
+        'articles' :articles_files,
+        'in_this_category' : article_views.Article.objects.filter(category__title__iexact=category_title)[:4],
+        'most_viewed' : most_viewed,
+        'featured' : featured,
+        'recent' : recent,
+        'category_title': category_title,
+        'cate_list': category,}
+        context.update(needed_everywhere())
         return context
 
 
@@ -88,6 +117,12 @@ class SearchView(ListView):
             author__icontains=search_term) | Q(category__title__icontains=search_term) | Q(description__icontains=search_term))
         article_number = articles.count()
         current_url = resolve(self.request.path_info).url_name
+        most_viewed = article_views.Article.objects.order_by('-views')[:4]
+        featured = article_views.Article.objects.order_by('-favorites')[:4]
+        recent = article_views.Article.objects.order_by('-publish_date')[:4]
+        cate_list = article_views.Category.objects.values('title').annotate(count = Count('article'))
+        category  = {cate['title']:cate['count'] for cate in cate_list}
+      
 
 
         paginator = Paginator(articles, self.paginate_by)
@@ -104,14 +139,20 @@ class SearchView(ListView):
         
         context = {
             'articles': articles_files,
+            'in_this_category' : article_views.Article.objects.order_by('-update_at')[:6],
+            'most_viewed' : most_viewed,
+            'featured' : featured,
+            'recent' : recent,
             'products_number': article_number,
             'search': search_term,
             'url_name': current_url,
             'search_exist': 'true',
+            'cate_list': category,
         }
       
-       
+        context.update(needed_everywhere())
         return context
+
 
 def details(request,cate_title,title):
     article =  article_views.Article.objects.get(title__iexact=title)
@@ -120,12 +161,9 @@ def details(request,cate_title,title):
     most_viewed = article_views.Article.objects.order_by('-views')[:4]
     featured = article_views.Article.objects.order_by('-favorites')[:4]
     recent = article_views.Article.objects.order_by('-publish_date')[:4]
-    cate_list = article_views.Category.objects.values('title').annotate(Count('article'))
-    for i in cate_list:
-        for k1,v1 in i.items():
-            print (k1,v1)
-
-    print(cate_list)
+    cate_list = article_views.Category.objects.values('title').annotate(count = Count('article'))
+    category  = {cate['title']:cate['count'] for cate in cate_list}
+  
     context = {
         'article_title': article.title,
         'article_cate': article.category.title,
@@ -139,65 +177,31 @@ def details(request,cate_title,title):
         'most_viewed' : most_viewed,
         'featured' : featured,
         'recent' : recent,
-        'cate_list': cate_list,
+        'cate_list': category,
+        'article': article,
         }
    
-
+    context.update(needed_everywhere())
     return render (request, 'articles/single-page.html', context)
 
 
 
 
+@ login_required(login_url='/accounts/login/')
+def favourite_article(request,title):
+
+    url = request.META.get('HTTP_REFERER')
+    article = get_object_or_404(article_views.Article, title=title)
+    if article.favorites.filter(id=request.user.id).exists():
+        article.favorites.remove(request.user)
+        messages.warning(
+            request, f'"{article.title}" has been removed from your Favorites.')
+    else:
+        article.favorites.add(request.user)
+        messages.success(
+            request, f'"{article.title}" has been added to your Favorite.')
+    return HttpResponseRedirect(url)
+
+
+
     
-def Quick_View (request):
-    current_user = request.user
-    
-    if request.is_ajax():
-        
-        name_product = request.GET.get("product_name")
-        
-        product = core_models.Product.objects.filter(name = name_product)
-        product_id = product[0].id
-
-        product_name = product[0].name
-        image =product[0].image
-        description = product[0].description
-        price = product[0].price
-        discount_price=product[0].discount_price
-        color = product[0].color
-        size = product[0].size
-        c_store_type = product[0].category.store.storetype.slug
-        category_slug = product[0].category.slug
-        slug=product[0].slug
-        store_slug = product[0].category.store.slug
-        fav = product[0].favourite.all()
-
-        if  current_user in fav:
-           favourite =True
-        else:
-            favourite = False   
-
-        slug_product = ("/{c_store_type}-type/{store_slug}/{category_slug}/{slug}/").format(c_store_type=c_store_type, store_slug=store_slug, category_slug=category_slug, slug=slug)
-
-        favourite_slag = ('/favourite-product/{slug}/').format(slug = slug)
-        add_product_herf = ('/order/addtoshpcart/{id}/').format(id = product_id )
-        image = str(image)
-        slug_product = str(slug_product)
-        
-        context = {
-                'product_name': product_name,
-                'image': image,
-                'description':description,
-                'price': price,
-                'discount_price': discount_price,
-                'color': color,
-                'size': size,
-                'slug':slug_product,
-                'id':product_id,
-                'favourite': favourite,
-                'favourite_slag':favourite_slag,
-                'add':add_product_herf,
-
-
-            }
-        return JsonResponse(context)

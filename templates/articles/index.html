@@ -24,7 +24,7 @@ Home
                                     <img style="height: 343.625px; width: 540px;" src="/media/{{ article.image }}" /> 
 
                                     <div class="tn-title">
-                                        <a href="">{{article.title}}</a>
+                                        <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{article.title}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -41,7 +41,7 @@ Home
                                 <div class="tn-img">
                                     <img style="height: 172.025px ; width: 270px;" src="/media/{{ article.image }}" />
                                     <div class="tn-title">
-                                        <a href="">{{article.title}}</a>
+                                        <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{article.title}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -135,82 +135,83 @@ Home
 
                         <div class="tab-content">
                             <div id="featured" class="container tab-pane active">
+                                {% for article in featured %}
                                 <div class="tn-news">
                                     <div class="tn-img">
-                                        <img src="{% static 'img/news-350x223-1.jpg' %}" />
+                                        <img src="/media/{{ article.image }}" />
                                     </div>
                                     <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
+                                        <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{article.title}}</a>
+                                        <small><i class="fa fa-eye"></i> {{article.views}}</small>
+                                        {% if user in article.favorites.all %}
+                                        <a class="btn-wishlist btn-sm"
+                                            href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                                            data-placement="left" data-original-title="Remove from favorite">
+                                            <i class="fa fa-heart"></i></a>
+                                        {% else %}
+                                        <a class="btn-wishlist btn-sm"
+                                            href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                                            data-placement="left" data-original-title="Add to favorite"> 
+                                            <i class="fas fa-heart-broken"></i></a>
+                                        {% endif %}
+                                    
                                     </div>
                                 </div>
-                                <div class="tn-news">
-                                    <div class="tn-img">
-                                        <img src="img/news-350x223-2.jpg" />
-                                    </div>
-                                    <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
-                                    </div>
-                                </div>
-                                <div class="tn-news">
-                                    <div class="tn-img">
-                                        <img src="img/news-350x223-3.jpg" />
-                                    </div>
-                                    <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
-                                    </div>
-                                </div>
+                                {%endfor%}
+                             
                             </div>
+                            
                             <div id="popular" class="container tab-pane fade">
+                                {% for article in most_viewed %}
                                 <div class="tn-news">
                                     <div class="tn-img">
-                                        <img src="img/news-350x223-4.jpg" />
+                                        <img src="/media/{{ article.image }}" />
                                     </div>
                                     <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
+                                        <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{article.title}}</a>
+                                        
+                                        <small><i class="fa fa-eye"></i> {{article.views}}</small>
+                                        {% if user in article.favorites.all %}
+                                        <a class="btn-wishlist btn-sm"
+                                            href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                                            data-placement="left" data-original-title="Remove from favorite">
+                                            <i class="fa fa-heart"></i></a>
+                                        {% else %}
+                                        <a class="btn-wishlist btn-sm"
+                                            href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                                            data-placement="left" data-original-title="Add to favorite"> 
+                                            <i class="fas fa-heart-broken"></i></a>
+                                        {% endif %}
                                     </div>
                                 </div>
-                                <div class="tn-news">
-                                    <div class="tn-img">
-                                        <img src="img/news-350x223-5.jpg" />
-                                    </div>
-                                    <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
-                                    </div>
-                                </div>
-                                <div class="tn-news">
-                                    <div class="tn-img">
-                                        <img src="img/news-350x223-1.jpg" />
-                                    </div>
-                                    <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
-                                    </div>
-                                </div>
+                                {%endfor%}
+                                
                             </div>
                             <div id="latest" class="container tab-pane fade">
+                                {% for article in recent %}
                                 <div class="tn-news">
                                     <div class="tn-img">
-                                        <img src="img/news-350x223-2.jpg" />
+                                        <img src="/media/{{ article.image }}" />
                                     </div>
                                     <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
+                                        <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{article.title}}</a>
+                                        <small><i class="fa fa-eye"></i> {{article.views}}</small>
+                                        {% if user in article.favorites.all %}
+                                        <a class="btn-wishlist btn-sm"
+                                            href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                                            data-placement="left" data-original-title="Remove from favorite">
+                                            <i class="fa fa-heart"></i></a>
+                                        {% else %}
+                                        <a class="btn-wishlist btn-sm"
+                                            href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                                            data-placement="left" data-original-title="Add to favorite"> 
+                                            <i class="fas fa-heart-broken"></i></a>
+                                        {% endif %}
+                                   
                                     </div>
                                 </div>
-                                <div class="tn-news">
-                                    <div class="tn-img">
-                                        <img src="img/news-350x223-3.jpg" />
-                                    </div>
-                                    <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
-                                    </div>
-                                </div>
-                                <div class="tn-news">
-                                    <div class="tn-img">
-                                        <img src="img/news-350x223-4.jpg" />
-                                    </div>
-                                    <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
-                                    </div>
-                                </div>
+                                {%endfor%}
+                          
                             </div>
                         </div>
                     </div>
@@ -230,82 +231,88 @@ Home
 
                         <div class="tab-content">
                             <div id="m-viewed" class="container tab-pane active">
+                                
+                                {% for article in most_viewed %}
                                 <div class="tn-news">
                                     <div class="tn-img">
-                                        <img src="img/news-350x223-5.jpg" />
+                                        <img src="/media/{{ article.image }}" />
                                     </div>
                                     <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
+                                       
+                                        <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{article.title}}</a>
+                                        <small><i class="fa fa-eye"></i> {{article.views}}</small>
+                                        {% if user in article.favorites.all %}
+                                        <a class="btn-wishlist btn-sm"
+                                            href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                                            data-placement="left" data-original-title="Remove from favorite">
+                                            <i class="fa fa-heart"></i></a>
+                                        {% else %}
+                                        <a class="btn-wishlist btn-sm"
+                                            href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                                            data-placement="left" data-original-title="Add to favorite"> 
+                                            <i class="fas fa-heart-broken"></i></a>
+                                        {% endif %}
+                                   
                                     </div>
                                 </div>
-                                <div class="tn-news">
-                                    <div class="tn-img">
-                                        <img src="img/news-350x223-4.jpg" />
-                                    </div>
-                                    <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
-                                    </div>
-                                </div>
-                                <div class="tn-news">
-                                    <div class="tn-img">
-                                        <img src="img/news-350x223-3.jpg" />
-                                    </div>
-                                    <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
-                                    </div>
-                                </div>
+                                {%endfor%}
+                              
                             </div>
+                            
                             <div id="m-read" class="container tab-pane fade">
+
+                                {% for article in most_recent %}
                                 <div class="tn-news">
                                     <div class="tn-img">
-                                        <img src="img/news-350x223-2.jpg" />
+                                        <img src="/media/{{ article.image }}" />
                                     </div>
                                     <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
+                                        <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{article.title}}</a>
+                                        <small><i class="fa fa-eye"></i> {{article.views}}</small>
+                                        {% if user in article.favorites.all %}
+                                        <a class="btn-wishlist btn-sm"
+                                            href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                                            data-placement="left" data-original-title="Remove from favorite">
+                                            <i class="fa fa-heart"></i></a>
+                                        {% else %}
+                                        <a class="btn-wishlist btn-sm"
+                                            href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                                            data-placement="left" data-original-title="Add to favorite"> 
+                                            <i class="fas fa-heart-broken"></i></a>
+                                        {% endif %}
+                                   
                                     </div>
                                 </div>
-                                <div class="tn-news">
-                                    <div class="tn-img">
-                                        <img src="img/news-350x223-1.jpg" />
-                                    </div>
-                                    <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
-                                    </div>
-                                </div>
-                                <div class="tn-news">
-                                    <div class="tn-img">
-                                        <img src="img/news-350x223-3.jpg" />
-                                    </div>
-                                    <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
-                                    </div>
-                                </div>
+                                {%endfor%}
+                               
                             </div>
                             <div id="m-recent" class="container tab-pane fade">
+                              
+                                {% for article in recent %}
                                 <div class="tn-news">
                                     <div class="tn-img">
-                                        <img src="img/news-350x223-4.jpg" />
+                                        <img src="/media/{{ article.image }}" />
                                     </div>
                                     <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
+                                        <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{article.title}}</a>
+                                    
+                                        <small><i class="fa fa-eye"></i> {{article.views}}</small>
+                                        {% if user in article.favorites.all %}
+                                        <a class="btn-wishlist btn-sm"
+                                            href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                                            data-placement="left" data-original-title="Remove from favorite">
+                                            <i class="fa fa-heart"></i></a>
+                                        {% else %}
+                                        <a class="btn-wishlist btn-sm"
+                                            href="{% url 'articles:favourite_article' article.title %}" data-toggle="tooltip"
+                                            data-placement="left" data-original-title="Add to favorite"> 
+                                            <i class="fas fa-heart-broken"></i></a>
+                                        {% endif %}
+                                    
                                     </div>
                                 </div>
-                                <div class="tn-news">
-                                    <div class="tn-img">
-                                        <img src="img/news-350x223-5.jpg" />
-                                    </div>
-                                    <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
-                                    </div>
-                                </div>
-                                <div class="tn-news">
-                                    <div class="tn-img">
-                                        <img src="img/news-350x223-1.jpg" />
-                                    </div>
-                                    <div class="tn-title">
-                                        <a href="">Lorem ipsum dolor sit amet</a>
-                                    </div>
-                                </div>
+                                {%endfor%}
+                               
                             </div>
                         </div>
                     </div>
@@ -327,7 +334,7 @@ Home
                                 <div class="mn-img">
                                     <img style="height: 162.462px; width: 255px;" src="/media/{{ article.image }}" />
                                     <div class="mn-title">
-                                        <a href="">{{article.title}}</a>
+                                        <a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{article.title}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -344,16 +351,11 @@ Home
                         <div class="mn-list">
                             <h2>Read More</h2>
                             <ul>
-                                <li><a href="">Lorem ipsum dolor sit amet</a></li>
-                                <li><a href="">Pellentesque tincidunt enim libero</a></li>
-                                <li><a href="">Morbi id finibus diam vel pretium enim</a></li>
-                                <li><a href="">Duis semper sapien in eros euismod sodales</a></li>
-                                <li><a href="">Vestibulum cursus lorem nibh</a></li>
-                                <li><a href="">Morbi ullamcorper vulputate metus non eleifend</a></li>
-                                <li><a href="">Etiam vitae elit felis sit amet</a></li>
-                                <li><a href="">Nullam congue massa vitae quam</a></li>
-                                <li><a href="">Proin sed ante rutrum</a></li>
-                                <li><a href="">Curabitur vel lectus</a></li>
+                                {%for category,articles in all_articles.items%}
+                                {% for article in articles|slice:':2' %}  
+                                <li><a href="{% url 'articles:details' cate_title=article.category.title  title=article.title  %}">{{article.title|truncatewords:3}}</a></li>
+                                {%endfor%}
+                                {%endfor%}
                             </ul>
                         </div>
                     </div>
